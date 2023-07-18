@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class LinkedM8b {
+public class Tree8c {
     public static void main(String[] args) {
         HashMap<Integer, String> hm = new HashMap<Integer, String>();
         System.out.println("Is Empty or not:" + hm.isEmpty());
