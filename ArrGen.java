@@ -1,14 +1,15 @@
 import java.util.*;
+import java.lang.*;
 
-class ArrayQ<T> {
-    private ArrayList<T> queue;
+class ArrGen<T> {
+    private ArrayList<T> stack = stack = new ArrayList<T>();
 
-    public ArrayQ() {
-        queue = new ArrayList<T>();
-    }
+    // public ArrGen() {
+    // stack = new ArrayList<T>();
+    // }
 
     public void push(T item) {
-        queue.add(item);
+        stack.add(item);
     }
 
     public T pop() {
@@ -16,7 +17,7 @@ class ArrayQ<T> {
             System.out.println("Empty..");
             return null;
         } else {
-            return queue.remove(0);
+            return stack.remove(stack.size() - 1);
         }
     }
 
@@ -25,7 +26,7 @@ class ArrayQ<T> {
             System.out.println("Empty..");
             return null;
         } else {
-            return queue.get(0);
+            return stack.get(stack.size() - 1);
         }
     }
 
@@ -33,29 +34,28 @@ class ArrayQ<T> {
         if (isEmpty())
             throw new RuntimeException("Empty..");
         else {
-            for (int i = 0; i < queue.size(); i++)
-                System.out.println(queue.get(i));
+            for (int i = stack.size() - 1; i >= 0; i--)
+                System.out.println(stack.get(i));
         }
     }
 
     public boolean isEmpty() {
-        return queue.size() == 0;
+        return stack.size() == 0;
     }
 
     public int size() {
-        return queue.size();
+        return stack.size();
     }
-}
 
-public class CollectionQA5a {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Choose the data type on which you want to performoperation:");
+        System.out.println("Choose the data type on which you want to perform operation:");
+
         System.out.println("1.Integer\n2.Float\n3.String");
         int datatype = sc.nextInt();
         switch (datatype) {
             case 1:
-                ArrayQ<Integer> a = new ArrayQ<Integer>();
+                ArrGen<Integer> a = new ArrGen<>();
                 while (true) {
                     System.out.println("Enter Operation to perform on stack:");
                     System.out.println("1.Push\n2.Pop\n3.Peek\n4.Display\n5.Size");
@@ -85,7 +85,7 @@ public class CollectionQA5a {
                     }
                 }
             case 2:
-                ArrayQ<Float> f = new ArrayQ<Float>();
+                ArrGen<Float> f = new ArrGen<>();
                 while (true) {
                     System.out.println("Enter Operation to perform on stack:");
                     System.out.println("1.Push\n2.Pop\n3.Peek\n4.Display\n5.Size");
@@ -115,7 +115,7 @@ public class CollectionQA5a {
                     }
                 }
             case 3:
-                ArrayQ<String> s = new ArrayQ<String>();
+                ArrGen<String> s = new ArrGen<String>();
                 while (true) {
                     System.out.println("Enter Operation to perform on stack:");
                     System.out.println("1.Push\n2.Pop\n3.Peek\n4.Display\n5.Size");

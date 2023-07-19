@@ -1,5 +1,5 @@
 import java.util.*;
-public class HashM8a {
+public class Hashmap {
  public static void main(String[] args) {
  HashMap<Integer, String> hm = new HashMap<Integer, String>();
  System.out.println("Is Empty or not:" + hm.isEmpty());
@@ -7,7 +7,7 @@ public class HashM8a {
  hm.put(2, "B");
  hm.put(3, "C");
  System.out.println(hm);
- hm.remove(1, "D");
+ hm.remove(1);
  System.out.println("Elements :" + hm);
  hm.replace(1, "D");
  System.out.println("Elements :" + hm);

@@ -1,14 +1,14 @@
 import java.util.*;
 
-class LinkedGen<T> {
-    private LinkedList<T> stack;
+class ArrayQ<T> {
+    private ArrayList<T> queue;
 
-    public LinkedGen() {
-        stack = new LinkedList<T>();
+    public ArrayQ() {
+        queue = new ArrayList<T>();
     }
 
     public void push(T item) {
-        stack.addFirst(item);
+        queue.add(item);
     }
 
     public T pop() {
@@ -16,7 +16,7 @@ class LinkedGen<T> {
             System.out.println("Empty..");
             return null;
         } else {
-            return stack.removeFirst();
+            return queue.remove(0);
         }
     }
 
@@ -25,7 +25,7 @@ class LinkedGen<T> {
             System.out.println("Empty..");
             return null;
         } else {
-            return stack.getFirst();
+            return queue.get(0);
         }
     }
 
@@ -33,30 +33,29 @@ class LinkedGen<T> {
         if (isEmpty())
             throw new RuntimeException("Empty..");
         else {
-            for (int i = stack.size() - 1; i >= 0; i--)
-                System.out.println(stack.get(i));
+            for (int i = 0; i < queue.size(); i++)
+                System.out.println(queue.get(i));
         }
     }
 
     public boolean isEmpty() {
-        return stack.size() == 0;
+        return queue.size() == 0;
     }
 
     public int size() {
-        return stack.size();
+        return queue.size();
     }
-}
 
-public class CollectionDemo4b {
+
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter choice:");
         System.out.println("Choose the data type on which you want to performoperation:");
         System.out.println("1.Integer\n2.Float\n3.String");
-        int datatypel = sc.nextInt();
-        switch (datatypel) {
+        int datatype = sc.nextInt();
+        switch (datatype) {
             case 1:
-                LinkedStack<Integer> l = new LinkedStack<Integer>();
+                ArrayQ<Integer> a = new ArrayQ<Integer>();
                 while (true) {
                     System.out.println("Enter Operation to perform on stack:");
                     System.out.println("1.Push\n2.Pop\n3.Peek\n4.Display\n5.Size");
@@ -66,27 +65,27 @@ public class CollectionDemo4b {
                             System.out.println("Enter no:of elements to pushinto a stack:");
                             int n = sc.nextInt();
                             for (int i = 0; i < n; i++)
-                                l.push(sc.nextInt());
+                                a.push(sc.nextInt());
                             break;
                         case 2:
-                            System.out.println("Popped Element:" + l.pop());
+                            System.out.println("Popped Element:" + a.pop());
                             break;
                         case 3:
-                            System.out.println("Peeked element:" + l.peek());
+                            System.out.println("Peeked element:" + a.peek());
                             break;
                         case 4:
                             System.out.println("Elements in stack are:");
-                            l.display();
+                            a.display();
                             break;
                         case 5:
-                            System.out.println("Size:" + l.size());
+                            System.out.println("Size:" + a.size());
                             break;
                         default:
                             return;
                     }
                 }
             case 2:
-                LinkedStack<Float> f = new LinkedStack<Float>();
+                ArrayQ<Float> f = new ArrayQ<Float>();
                 while (true) {
                     System.out.println("Enter Operation to perform on stack:");
                     System.out.println("1.Push\n2.Pop\n3.Peek\n4.Display\n5.Size");
@@ -110,12 +109,13 @@ public class CollectionDemo4b {
                             break;
                         case 5:
                             System.out.println("Size:" + f.size());
+                            break;
                         default:
                             return;
                     }
                 }
             case 3:
-                LinkedStack<String> s = new LinkedStack<String>();
+                ArrayQ<String> s = new ArrayQ<String>();
                 while (true) {
                     System.out.println("Enter Operation to perform on stack:");
                     System.out.println("1.Push\n2.Pop\n3.Peek\n4.Display\n5.Size");
@@ -139,7 +139,6 @@ public class CollectionDemo4b {
                             break;
                         case 5:
                             System.out.println("Size:" + s.size());
-                            break;
                         default:
                             return;
                     }
