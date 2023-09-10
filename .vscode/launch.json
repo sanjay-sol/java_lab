@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "EvenorOdd",
+            "request": "launch",
+            "mainClass": "EvenorOdd",
+            "projectName": "java_34724531"
+        },
+        {
+            "type": "java",
+            "name": "Fiboformula",
+            "request": "launch",
+            "mainClass": "Fiboformula",
+            "projectName": "java_34724531"
+        },
+        {
+            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}"
