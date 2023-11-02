@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Ceiling",
+            "request": "launch",
+            "mainClass": "slidingWindow.Ceiling",
+            "projectName": "java_34724531"
+        },
+        {
+            "type": "java",
+            "name": "Test",
+            "request": "launch",
+            "mainClass": "Test",
+            "projectName": "java_34724531"
+        },
+        {
+            "type": "java",
             "name": "EvenorOdd",
             "request": "launch",
             "mainClass": "EvenorOdd",

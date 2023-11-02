@@ -1,4 +1,4 @@
-import java.util.ArrayList;
+// import java.util.ArrayList;
 import java.util.*;
 
 public class Hashmapex {
@@ -12,6 +12,8 @@ public class Hashmapex {
         }
         
             System.out.println(hm);
+         String[] strs = {"eat","tea","tan","ate","nat","bat"};
+         System.out.println(strs[0]);
         
         // System.out.println(Math.max(k, k));
         // System.out.println(al);
