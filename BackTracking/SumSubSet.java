@@ -13,15 +13,16 @@ class SumSubSet {
         System.out.print(subsets);
     }
     private static void subSet(int[] arr, int N, int K, int idx, int sum,ArrayList<Integer> currset,  ArrayList<ArrayList<Integer>> subsets){
-        if(idx == N) {
-            if(sum == K){
-                subsets.add(new ArrayList<>(currset));
-            }
+        if (sum == K) {
+            subsets.add(new ArrayList<>(currset));
             return;
-        } 
+        }
+        if (sum > K || idx == N) {
+            return;
+        }
         
         currset.add(arr[idx]);
-       subSet(arr,N,K,idx+1,sum+arr[idx],currset,subsets);
+       subSet(arr,N,K,idx,sum+arr[idx],currset,subsets);
        currset.remove(currset.size()-1);
          subSet(arr,N,K,idx+1,sum,currset,subsets);
     }
