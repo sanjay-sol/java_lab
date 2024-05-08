@@ -1,0 +1,460 @@
+1.read from hdfs
+
+package read;
+
+import org.apache.hadoop.conf.Configuration;
+
+import org.apache.hadoop.fs.*;
+
+import java.io.IOException;
+
+import org.apache.commons.io.IOUtils;
+
+public class ReadtoHDFS{
+
+ public static void readFileFromHDFS() throws IOException
+
+ {
+
+ Configuration conf = new Configuration();
+
+ conf.set("fs.defaultFS","hdfs://localhost:9000");
+
+ FileSystem fs = FileSystem.get(conf);
+
+ String filename = "hello.txt";
+
+ Path hdfspath = new Path("/ak/" + filename);
+
+ FSDataInputStream is = fs.open(hdfspath);
+
+ String out = IOUtils.toString(is,"UTF-8");
+
+ System.out.println(out);
+
+ is.close();
+
+ fs.close();
+
+ }
+
+ public static void main(String[] args) throws IOException
+
+ {
+
+ readFileFromHDFS();
+
+ }
+
+ }
+
+
+2.write to hdfs
+
+import java.io.*;
+
+import java.io.IOException;
+
+import java.nio.charset.StandardCharsets;
+
+//import org.apache.commons.io.IOUtils;
+
+import org.apache.hadoop.conf.Configuration;
+
+//import org.apache.hadoop.fs.FSDataInputStream;
+
+import org.apache.hadoop.fs.FSDataOutputStream;
+
+import org.apache.hadoop.fs.FileSystem;
+
+import org.apache.hadoop.fs.Path;
+
+public class WritetoHDFS {
+
+ public static void writeFiletoHDFS() throws IOException
+
+ {
+
+ Configuration conf = new Configuration();
+
+ conf.set("fs.defaultFS","hdfs://localhost:9000");
+
+ FileSystem fs = FileSystem.get(conf);
+
+ String filename = "a.txt";
+
+ Path hdfspath = new Path("/anj/" + filename);
+
+ FSDataOutputStream is = fs.create(hdfspath,true);
+
+ BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(is,StandardCharsets.UTF_8));
+
+ bw.write("HELLO WORLD......");
+
+ bw.newLine();
+
+ bw.close();
+
+ System.out.println("SUCCESS");
+
+ is.close();
+
+ fs.close();
+
+ }
+
+ public static void main(String[] args) throws IOException
+
+ {
+
+ writeFiletoHDFS();
+
+ }
+
+}
+
+
+3.copy file from local to hdfs
+
+import java.io.IOException;
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
+public class CopyFromLocalDir {
+public static void main(String[] args) throws IOException {
+Configuration configuration = new Configuration();
+configuration.set("fs.defaultFS", "hdfs://localhost:9000");
+FileSystem fileSystem = FileSystem.get(configuration);
+fileSystem.copyFromLocalFile(false,new Path("C:/hello.txt"),new Path("hdfs://localhost:9000/newdir/f1.txt"));
+System.out.println("Success");}
+}
+
+
+4.copy file from hdfs to local
+
+import java.io.IOException;
+
+import org.apache.hadoop.conf.Configuration;
+
+import org.apache.hadoop.conf.Configured;
+
+import org.apache.hadoop.fs.FileSystem;
+
+import org.apache.hadoop.fs.Path;
+
+public class CopyToLocalDir {
+
+ public static void main(String[] args) throws IOException
+
+ { Configuration conf=new Configuration(true);
+
+ //copyToLocalFile(Path src, Path dst)
+
+ conf.set("fs.defaultFS","hdfs://localhost:9000");
+
+ FileSystem fs=FileSystem.get(conf);
+
+ fs.copyToLocalFile(new Path("hdfs://localhost:9000/ak/a.txt"),new Path("C:/Users/CVR/Desktop"));
+
+ System.out.println("SUCCESS");
+
+ }
+
+}
+
+5.get bucket
+
+import org.apache.hadoop.conf.Configuration;
+
+import org.apache.hadoop.fs.FileStatus;
+
+import org.apache.hadoop.fs.FileSystem;
+
+import org.apache.hadoop.fs.Path;
+
+import org.apache.hadoop.hdfs.DFSConfigKeys;
+import java.io.IOException;
+public class GetBucket {
+
+ public static void main(String[] args) throws IOException
+
+ {
+
+ Configuration conf=new Configuration(true);
+
+ conf.set(DFSConfigKeys.FS_DEFAULT_NAME_KEY,"hdfs://127.0.0.1:9000");
+
+ conf.set(DFSConfigKeys.DFS_REPLICATION_KEY,"3");
+
+ FileSystem dfs=FileSystem.get(conf);
+
+ FileStatus[] sl=dfs.listStatus(new Path("/ak"));
+
+ for(int i=0;i<sl.length;i++)
+
+ {
+
+ if(sl[i].isFile())
+
+ {
+
+ System.out.println(sl[i].getPath().getName());
+
+ }
+
+ }
+
+ }
+
+}
+
+6.delete bucket
+  
+  import java.io.IOException;
+
+import org.apache.hadoop.conf.Configuration;
+
+import org.apache.hadoop.fs.FileSystem;
+
+import org.apache.hadoop.fs.Path;
+
+public class DeleteFile
+
+{
+
+ public static void createDirectory() throws IOException
+
+ {
+
+ Configuration conf = new Configuration();
+
+ conf.set("fs.defaultFS","hdfs://localhost:9000");
+
+ FileSystem fs = FileSystem.get(conf);
+
+ fs.delete(new Path("hdfs://localhost:9000/ak/ab.txt"),false);
+
+ System.out.println("SUCCESS");
+
+ }
+
+ public static void main(String[] args) throws IOException
+
+ {
+
+ createDirectory();
+
+ }
+
+}
+
+
+7.word count
+
+import java.io.IOException;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.LongWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.util.GenericOptionsParser;
+
+
+public class worc {
+       
+        @SuppressWarnings("deprecation")
+        public static void main(String[] args) throws Exception {
+                // TODO Auto-generated method stub
+                Configuration c=new Configuration();
+                String[] files=new GenericOptionsParser(c,args).getRemainingArgs();
+                Path input=new Path(files[0]);
+                Path output=new Path(files[1]);
+                Job j=new Job(c,"Word");
+                j.setJarByClass(worc.class);
+                j.setMapperClass(MapForWordCount.class);
+                j.setReducerClass(ReduceForWordCount.class);
+                j.setOutputKeyClass(Text.class);
+                j.setOutputValueClass(IntWritable.class);
+                FileInputFormat.addInputPath(j,input);
+                FileOutputFormat.setOutputPath(j,output);
+                System.exit(j.waitForCompletion(true)?0:1);
+                }
+        public static class MapForWordCount extends Mapper<LongWritable,Text,Text,IntWritable>{
+                public void map(LongWritable key,Text value,Context con)throws IOException,InterruptedException
+                {
+                        String line=value.toString();
+                        String[] words=line.split(",");
+                        for(String word: words){
+                        Text outputKey=new Text(word.toUpperCase().trim());
+                        IntWritable outputValue=new IntWritable(1);
+                        con.write(outputKey,outputValue);
+                }
+        }
+}
+public static class ReduceForWordCount extends Reducer<Text,IntWritable,Text,IntWritable>{
+        public void reduce(Text word,Iterable<IntWritable> values,Context con) throws IOException,InterruptedException
+        {
+                int sum=0;
+                for(IntWritable value:values){
+                        sum+=value.get();
+                }
+                con.write(word,new IntWritable(sum));
+        }
+}
+}
+
+8.weather forecast
+
+import java.io.IOException;
+
+import java.util.Iterator;
+
+import org.apache.hadoop.fs.Path;
+
+import org.apache.hadoop.io.LongWritable;
+
+import org.apache.hadoop.io.Text;
+
+import org.apache.hadoop.mapreduce.lib.input.*;
+
+import org.apache.hadoop.mapreduce.lib.output.*;
+
+import org.apache.hadoop.mapreduce.Job;
+
+import org.apache.hadoop.mapreduce.Mapper;
+
+import org.apache.hadoop.mapreduce.Reducer;
+
+import org.apache.hadoop.conf.Configuration;
+
+public class Weather
+
+{
+
+  public static class MaxTemperatureMapper extends Mapper<LongWritable, Text, Text, Text>
+
+  {
+
+    @Override
+
+    public void map(LongWritable arg0, Text value, Context context) throws IOException, InterruptedException
+
+    {
+
+      String line = value.toString();
+
+      if(!(line.length()==0))
+
+      {
+
+        String date = line.substring(6,14);
+
+        float temp_Max = Float.parseFloat(line.substring(39,45).trim());
+
+        float temp_Min = Float.parseFloat(line.substring(47,53).trim());
+
+        if(temp_Max > 35.0)
+
+        {
+
+          //Hot day
+
+          context.write(new Text("Hot Day" + date), new Text(String.valueOf(temp_Min)));
+
+        }
+
+        if(temp_Min<10)
+
+        {
+
+          //cold day
+
+          context.write(new Text("Cold day" + date), new Text(String.valueOf(temp_Min)));
+
+        }
+
+      }
+
+    }
+
+  }
+
+  public static class MaxTemperatureReducer extends Reducer<Text, Text, Text, Text>
+
+  {
+
+    public void reduce(Text key, Iterator<Text> values, Context context) throws IOException, InterruptedException
+
+    {
+
+      String temperature = values.next().toString();
+
+      context.write(key, new Text(temperature));
+
+    }
+
+  }
+
+  @SuppressWarnings("deprecation")
+
+  public static void main(String[] args) throws Exception
+
+  {
+
+    //reads the default configuration of cluster from cluster configuration
+
+    Configuration conf = new Configuration();
+
+    Job job = new Job();
+
+    job.setJarByClass(Weather.class);
+
+    job.setReducerClass(MaxTemperatureReducer.class);
+
+    job.setMapperClass(MaxTemperatureMapper.class);
+
+    job.setInputFormatClass(TextInputFormat.class);
+
+    job.setOutputFormatClass(TextOutputFormat.class);
+
+    job.setMapOutputKeyClass(Text.class);
+
+    job.setMapOutputValueClass(Text.class);
+
+    Path ip = new Path("C:/Users/CVR/Desktop/inp.txt");
+
+    Path op = new Path("C:/Users/CVR/Desktop/qwer");
+
+    FileInputFormat.addInputPath(job,ip);
+
+    FileOutputFormat.setOutputPath(job,op);
+
+    op.getFileSystem(conf).delete(op);
+
+    System.exit(job.waitForCompletion(true)?0:1);
+
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
