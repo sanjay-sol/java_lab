@@ -1,0 +1,31 @@
+project
+record = LOAD '/home/cloudera/Desktop/int1.txt' using PigStorage(',') AS (year:chararray,temperature:int,quality:int);
+filtered_records = FILTER record BY temperature!=9999 AND quality IN (0,1,4,5,9);
+grouped_records = GROUP filtered_records BY year;
+max_temp = FOREACH grouped_records GENERATE group,MAX(filtered_records.temperature);
+DUMP max_temp;
+
+
+group
+daily = LOAD '/home/cloudera/Desktop/int.txt' 
+as (exchange:chararray,symbol:chararray,date:chararray,open:float,high:float,low:float,close:float,volume:int,adj_close:float);
+rough = FOREACH daily generate volume * close;
+DUMP rough;
+
+
+join
+divs = load '/home/cloudera/Desktop/int.txt' as (exchange,stock_symbol,date,dividends);
+daily = load '/home/cloudera/Desktop/int.txt';
+ind = join divs by stock_symbol , daily by $1;
+dump ind;
+
+filter
+daily = LOAD '/home/cloudera/Desktop/int.txt' ;
+filterd = FILTER daily BY $1=='GRT' AND $8>30.0;
+DUMP filterd;
+
+sort
+record = LOAD '/home/cloudera/Desktop/int1.txt' using PigStorage(',') AS (year:chararray,temperature:int,quality:int);
+filtered_records = FILTER record BY temperature!=9999 AND quality IN (0,1,4,5,9);
+grouped_records = GROUP filtered_records BY year;
+DUMP grouped_records;
