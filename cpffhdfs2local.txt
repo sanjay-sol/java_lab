@@ -1,0 +1,31 @@
+4.copy file from hdfs to local
+
+import java.io.IOException;
+
+import org.apache.hadoop.conf.Configuration;
+
+import org.apache.hadoop.conf.Configured;
+
+import org.apache.hadoop.fs.FileSystem;
+
+import org.apache.hadoop.fs.Path;
+
+public class CopyToLocalDir {
+
+ public static void main(String[] args) throws IOException
+
+ { Configuration conf=new Configuration(true);
+
+ //copyToLocalFile(Path src, Path dst)
+
+ conf.set("fs.defaultFS","hdfs://localhost:9000");
+
+ FileSystem fs=FileSystem.get(conf);
+
+ fs.copyToLocalFile(new Path("hdfs://localhost:9000/ak/a.txt"),new Path("C:/Users/CVR/Desktop"));
+
+ System.out.println("SUCCESS");
+
+ }
+
+}

@@ -1,0 +1,64 @@
+2.write to hdfs
+
+import java.io.*;
+
+import java.io.IOException;
+
+import java.nio.charset.StandardCharsets;
+
+//import org.apache.commons.io.IOUtils;
+
+import org.apache.hadoop.conf.Configuration;
+
+//import org.apache.hadoop.fs.FSDataInputStream;
+
+import org.apache.hadoop.fs.FSDataOutputStream;
+
+import org.apache.hadoop.fs.FileSystem;
+
+import org.apache.hadoop.fs.Path;
+
+public class WritetoHDFS {
+
+ public static void writeFiletoHDFS() throws IOException
+
+ {
+
+ Configuration conf = new Configuration();
+
+ conf.set("fs.defaultFS","hdfs://localhost:9000");
+
+ FileSystem fs = FileSystem.get(conf);
+
+ String filename = "a.txt";
+
+ Path hdfspath = new Path("/anj/" + filename);
+
+ FSDataOutputStream is = fs.create(hdfspath,true);
+
+ BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(is,StandardCharsets.UTF_8));
+
+ bw.write("HELLO WORLD......");
+
+ bw.newLine();
+
+ bw.close();
+
+ System.out.println("SUCCESS");
+
+ is.close();
+
+ fs.close();
+
+ }
+
+ public static void main(String[] args) throws IOException
+
+ {
+
+ writeFiletoHDFS();
+
+ }
+
+}
+

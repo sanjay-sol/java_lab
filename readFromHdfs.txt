@@ -1,0 +1,50 @@
+1.read from hdfs
+
+package read;
+
+import org.apache.hadoop.conf.Configuration;
+
+import org.apache.hadoop.fs.*;
+
+import java.io.IOException;
+
+import org.apache.commons.io.IOUtils;
+
+public class ReadtoHDFS{
+
+ public static void readFileFromHDFS() throws IOException
+
+ {
+
+ Configuration conf = new Configuration();
+
+ conf.set("fs.defaultFS","hdfs://localhost:9000");
+
+ FileSystem fs = FileSystem.get(conf);
+
+ String filename = "hello.txt";
+
+ Path hdfspath = new Path("/ak/" + filename);
+
+ FSDataInputStream is = fs.open(hdfspath);
+
+ String out = IOUtils.toString(is,"UTF-8");
+
+ System.out.println(out);
+
+ is.close();
+
+ fs.close();
+
+ }
+
+ public static void main(String[] args) throws IOException
+
+ {
+
+ readFileFromHDFS();
+
+ }
+
+ }
+
