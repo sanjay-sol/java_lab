@@ -1,0 +1,40 @@
+6.delete bucket
+  
+  import java.io.IOException;
+
+import org.apache.hadoop.conf.Configuration;
+
+import org.apache.hadoop.fs.FileSystem;
+
+import org.apache.hadoop.fs.Path;
+
+public class DeleteFile
+
+{
+
+ public static void createDirectory() throws IOException
+
+ {
+
+ Configuration conf = new Configuration();
+
+ conf.set("fs.defaultFS","hdfs://localhost:9000");
+
+ FileSystem fs = FileSystem.get(conf);
+
+ fs.delete(new Path("hdfs://localhost:9000/ak/ab.txt"),false);
+
+ System.out.println("SUCCESS");
+
+ }
+
+ public static void main(String[] args) throws IOException
+
+ {
+
+ createDirectory();
+
+ }
+
+}
+
