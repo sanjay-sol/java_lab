@@ -1,0 +1,45 @@
+5.get bucket
+
+import org.apache.hadoop.conf.Configuration;
+
+import org.apache.hadoop.fs.FileStatus;
+
+import org.apache.hadoop.fs.FileSystem;
+
+import org.apache.hadoop.fs.Path;
+
+import org.apache.hadoop.hdfs.DFSConfigKeys;
+import java.io.IOException;
+public class GetBucket {
+
+ public static void main(String[] args) throws IOException
+
+ {
+
+ Configuration conf=new Configuration(true);
+
+ conf.set(DFSConfigKeys.FS_DEFAULT_NAME_KEY,"hdfs://127.0.0.1:9000");
+
+ conf.set(DFSConfigKeys.DFS_REPLICATION_KEY,"3");
+
+ FileSystem dfs=FileSystem.get(conf);
+
+ FileStatus[] sl=dfs.listStatus(new Path("/ak"));
+
+ for(int i=0;i<sl.length;i++)
+
+ {
+
+ if(sl[i].isFile())
+
+ {
+
+ System.out.println(sl[i].getPath().getName());
+
+ }
+
+ }
+
+ }
+
+}
