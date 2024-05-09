@@ -1,0 +1,111 @@
+3.turn on led
+
+
+import RPi.GPIO as GPIO
+import time
+# GPIO Numbering inside the chip GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setup(14,GPIO.OUT , initial=GPIO.LOW)
+
+# While loop
+while True:
+        # set GPIO14 pin to HIGH
+        GPIO.output(14,GPIO.HIGH)
+        # show message to Terminal
+        print "LED is ON"
+        # pause for one second
+        time.sleep(1)
+
+
+        # set GPIO14 pin to LOW
+        GPIO.output(14,GPIO.LOW)
+        # show message to Terminal
+        print "LED is OFF"
+        # pause for one second
+        time.sleep(1)
+
+
+4.turn on led when push button is pressed
+
+import RPi.GPIO as GPIO		
+import time
+LED = 40			#pin no. as per BOARD, GPIO18 as per BCM
+button = 37
+GPIO.setwarnings(False) 	
+GPIO.setmode(GPIO.BOARD)	
+GPIO.setup(button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(LED, GPIO.OUT)	
+
+
+while True:
+        button_state = GPIO.input(button)
+        if  button_state == False:
+            GPIO.output(LED,GPIO.HIGH)
+        else:
+           time.sleep(1)
+           GPIO.output(LED,GPIO.LOW)
+
+
+
+
+5.print humidity and temperature
+
+import adafruit_dht
+import time
+import board
+import sys
+DHT_SEN=adafruit_dht.DHT11(board.D4)
+while True:
+    try:
+        temp=DHT_SEN.temperature
+        hum=DHT_SEN.humidity
+        print("temp={:.1f}C hum={}%".format(temp,hum))
+    except Exception as e:
+        DHT_SEN.exit()
+        raise e
+    time.sleep(2)
+
+
+
+6.turn on servo motor
+
+components:
+Raspberry Pi with screen, keyboard, and mouse
+SG90 servo
+Jumper wires
+
+
+import RPi.GPIO as GPIO
+import time
+
+# setup RPi
+GPIO.setwarnings(False)
+servo_pin = 12
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(servo_pin,GPIO.OUT)
+
+# 50 Hz or 20 ms PWM period
+pwm = GPIO.PWM(servo_pin,50) 
+
+print("Starting at zero...")
+pwm.start(5) 
+
+try:
+    while True:
+        print("Setting to zero...")
+        pwm.ChangeDutyCycle(5) 
+        time.sleep(1)
+
+        print("Setting to 180...")
+        pwm.ChangeDutyCycle(10) 
+        time.sleep(1)
+
+        print("Setting to 90...")
+        pwm.ChangeDutyCycle(7.5) 
+        time.sleep(1)
+except KeyboardInterrupt:
+    pwm.stop() 
+    GPIO.cleanup()
+    print("Program stopped")
+
+
